@@ -41,6 +41,13 @@ endif()
 set(ALL_INTERFACE_TARGET compile_definitions)
 add_library(${ALL_INTERFACE_TARGET} INTERFACE)
 
+
+FIND_PACKAGE(Boost)
+IF (Boost_FOUND)
+    INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
+    ADD_DEFINITIONS( "-DHAS_BOOST" )
+ENDIF()
+
 if(NUMCPP_NO_USE_BOOST)
     target_compile_definitions(${ALL_INTERFACE_TARGET} INTERFACE -DNUMCPP_NO_USE_BOOST)
 else()
@@ -95,7 +102,7 @@ message(STATUS "Building ${PROJECT_NAME} version ${VERSION_STRING}")
 
 set(OUTPUT_BINARY_DIR ${PROJECT_SOURCE_DIR}/bin/$<0:>)
 
-if (BUILD_TESTS OR BUILD_MULTIPLE_TEST) 
+if (BUILD_TESTS OR BUILD_MULTIPLE_TEST)
     add_subdirectory(test)
 endif()
 
@@ -106,7 +113,7 @@ add_library(${PROJECT_NAME} INTERFACE)
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 include(GNUInstallDirs)
-target_include_directories(${PROJECT_NAME} INTERFACE 
+target_include_directories(${PROJECT_NAME} INTERFACE
     $<BUILD_INTERFACE:${${PROJECT_NAME}_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
@@ -162,10 +169,10 @@ install(EXPORT ${PROJECT_NAME}_Targets
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake
 )
 
-install(FILES 
-    "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"   
+install(FILES
+    "${PROJECT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
     "${PROJECT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-    DESTINATION 
+    DESTINATION
     ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME}/cmake
 )
 
