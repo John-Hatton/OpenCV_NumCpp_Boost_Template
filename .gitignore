@@ -227,6 +227,12 @@ __pycache__/
 
 *.tar
 
-cmake-build-debug-mingw/
 
+# John
+cmake-build-debug-mingw/
+develop/
+examples/
+include/
+package.json
+test/
 
